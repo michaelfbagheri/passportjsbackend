@@ -9,7 +9,8 @@ router.get('/', function (req, res) {
 })
 
 router.get('/signup', function (req, res) {
-    res.render('signup');
+    msg_Error = req.flash('alreadyExists')
+    res.render('signup', { msgError: msg_Error });
 })
 
 router.post('/signup', passport.authenticate('local.signup', {
@@ -28,7 +29,10 @@ router.get('/profile', isLoggedIn, function (req, res) {
 
 //get routed to the login page
 router.get('/login', function (req, res) {
-    res.render('login');
+    login_Error = req.flash('loginError')
+    password_Error = req.flash('passwordError')
+    //below render is stating if you cn't load the login page 
+    res.render('login', { loginError: login_Error, passwordError: password_Error });
 });
 
 //route used to send login info from form to passport for authentication purposes
@@ -57,5 +61,6 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
+    console.log("Must login first!")
     res.redirect('/login')
 }

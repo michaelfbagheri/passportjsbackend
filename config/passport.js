@@ -28,8 +28,9 @@ passport.use('local.signup', new LocalStrategy({
         }
         //if the user exists already
         if (user) {
+            console.log("this user already exists")
+            req.flash('alreadyExists', 'This user alrady exists!')
             return done(null, false)
-            //after installing connect flash we'll send back error message
         }
         var newUser = new User();
         newUser.fullname = req.body.name;
@@ -62,11 +63,14 @@ passport.use('local.login', new LocalStrategy({
         }
         //in this strategy we're checking to see if the user does not exist
         if (!user) {
+            console.log("this user does not exist")
+            req.flash('loginError', 'User Email Not Found!');
             return done(null, false)
-            //after installing connect flash we'll send back error message
         }
         //if user does exist we'll check to ensure their password is correct
         if (!user.validPassword(req.body.password)) {
+            console.log("login rejected: incorrect password")
+            req.flash('passwordError', 'Incorrect Password!')
             //after installing connect flash we'll send back error message
             return done(null, false)
         }
