@@ -14,6 +14,7 @@ var app = express();
 mongoose.connect('mongodb://localhost/passportlocal')
 
 var user = require('./controllers/user');
+//I'm still not certain how you could just require a file without putting it in a variable, but this is critical
 require('./config/passport');
 
 app.set('view engine', 'ejs');
